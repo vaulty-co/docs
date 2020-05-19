@@ -1,7 +1,7 @@
 module.exports = {
   title: 'Vaulty',
   tagline: 'Tokenize, encrypt/decrypt, mask your data on the fly with Vaulty proxy',
-  url: 'https://vaulty.co',
+  url: 'https://vaulty-co.netlify.app',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
   organizationName: 'vaulty-co', // Usually your GitHub org/user name.
