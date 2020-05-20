@@ -1,6 +1,6 @@
 module.exports = {
   title: 'Vaulty',
-  tagline: 'Tokenize, encrypt/decrypt, mask your data on the fly with Vaulty proxy',
+  tagline: 'Encrypt, tokenize, mask your data transparently with Vaulty',
   url: 'https://vaulty-co.netlify.app',
   baseUrl: '/',
   favicon: 'img/favicon.ico',
