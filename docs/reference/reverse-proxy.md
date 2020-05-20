@@ -10,26 +10,26 @@ Let's look at an example.
 
 ```json
 {
-    "vault":{
-        "upstream":"https://default-backend.int/"
-    },
-    "routes":{
-        "inbound":[
-            {
-                "method":"POST",
-                "path":"/token",
-                "request_transformations":[
-                    {
-                        "type":"json",
-                        "expression":"card.number",
-                        "action":{
-                            "type":"encrypt"
-                        }
-                    }
-                ]
+  "vault":{
+    "upstream":"https://default-backend.int/"
+  },
+  "routes":{
+    "inbound":[
+      {
+        "method":"POST",
+        "path":"/token",
+        "request_transformations":[
+          {
+            "type":"json",
+            "expression":"card.number",
+            "action":{
+              "type":"encrypt"
             }
+          }
         ]
-    }
+      }
+    ]
+  }
 }
 ```
 
@@ -37,27 +37,27 @@ This route sets own upstream, so all matched requests are sent to this upstream:
 
 ```json
 {
-    "vault":{
-        "upstream":"https://default-backend.int/"
-    },
-    "routes":{
-        "inbound":[
-            {
-                "method":"POST",
-                "path":"/register",
-                "upstream":"https://auth-backend.int",
-                "request_transformations":[
-                    {
-                        "type":"json",
-                        "expression":"user.password",
-                        "action":{
-                            "type":"encrypt"
-                        }
-                    }
-                ]
+  "vault":{
+    "upstream":"https://default-backend.int/"
+  },
+  "routes":{
+    "inbound":[
+      {
+        "method":"POST",
+        "path":"/register",
+        "upstream":"https://auth-backend.int",
+        "request_transformations":[
+          {
+            "type":"json",
+            "expression":"user.password",
+            "action":{
+              "type":"encrypt"
             }
+          }
         ]
-    }
+      }
+    ]
+  }
 }
 ```
 

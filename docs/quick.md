@@ -16,26 +16,26 @@ Create a directory for experiments with Vaulty. In the directory, let's create s
 
 ```json
 {
-    "vault":{
-        "upstream":"https://postman-echo.com/"
-    },
-    "routes":{
-        "inbound":[
-            {
-                "method":"POST",
-                "path":"/post",
-                "request_transformations":[
-                    {
-                        "type":"json",
-                        "expression":"card.number",
-                        "action":{
-                            "type":"encrypt"
-                        }
-                    }
-                ]
+  "vault":{
+    "upstream":"https://postman-echo.com/"
+  },
+  "routes":{
+    "inbound":[
+      {
+        "method":"POST",
+        "path":"/post",
+        "request_transformations":[
+          {
+            "type":"json",
+            "expression":"card.number",
+            "action":{
+              "type":"encrypt"
             }
+          }
         ]
-    }
+      }
+    ]
+  }
 }
 ```
 

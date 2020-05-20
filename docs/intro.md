@@ -17,47 +17,55 @@ Routes are the heart of the Vaulty. Routes describe when and how Vaulty should p
 
 ```json
 {
-	"vault": {
-		"upstream": "https://api.yourbackend.com"
-	},
-	"routes": {
-		"inbound": [
-			{
-				"method": "POST",
-				"path": "/cards",
-				"request_transformations": [
-					{
-						"type": "json",
-						"expression": "card.number",
-						"action": { "type": "tokenize" }
-					},
-					{
-						"type": "json",
-						"expression": "card.cvc",
-						"action": { "type": "tokenize" }
-					}
-				]
-			}
-		],
-		"outbound": [
-			{
-				"method": "POST",
-				"path": "https://api.stripe.com/v1/tokens",
-				"request_transformations": [
-					{
-						"type": "json",
-						"expression": "card.number",
-						"action": { "type": "detokenize" }
-					},
-					{
-						"type": "json",
-						"expression": "card.cvc",
-						"action": { "type": "detokenize" }
-					}
-				]
-			}
-		]
-	}
+  "vault":{
+    "upstream":"https://api.yourbackend.com"
+  },
+  "routes":{
+    "inbound":[
+      {
+        "method":"POST",
+        "path":"/cards",
+        "request_transformations":[
+          {
+            "type":"json",
+            "expression":"card.number",
+            "action":{
+              "type":"tokenize"
+            }
+          },
+          {
+            "type":"json",
+            "expression":"card.cvc",
+            "action":{
+              "type":"tokenize"
+            }
+          }
+        ]
+      }
+    ],
+    "outbound":[
+      {
+        "method":"POST",
+        "path":"https://api.stripe.com/v1/tokens",
+        "request_transformations":[
+          {
+            "type":"json",
+            "expression":"card.number",
+            "action":{
+              "type":"detokenize"
+            }
+          },
+          {
+            "type":"json",
+            "expression":"card.cvc",
+            "action":{
+              "type":"detokenize"
+            }
+          }
+        ]
+      }
+    ]
+  }
 }
 ```
 

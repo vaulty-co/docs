@@ -38,11 +38,11 @@ This is how you can encrypt `user.password` element:
 
 ```json
 {
-    "type":"json",
-    "expression":"user.password",
-    "action":{
-        "type":"encrypt"
-    }
+  "type":"json",
+  "expression":"user.password",
+  "action":{
+    "type":"encrypt"
+  }
 }
 ```
 For this request:
@@ -58,10 +58,10 @@ You can see the result of transformation (and encryption):
 
 ```json
 {
-    "user":{
-        "password":"85c22c81779de93991f2e2b145e9dfd597bd7fd5a2f233ae0140809ee11189f8ee697b4c",
-        "email":"john@example.com"
-    }
+  "user":{
+    "password":"85c22c81779de93991f2e2b145e9dfd597bd7fd5a2f233ae0140809ee11189f8ee697b4c",
+    "email":"john@example.com"
+  }
 }
 ```
 
@@ -73,8 +73,8 @@ Using mask action you can replace value with placeholder (`*` by default). In "s
 
 ```json
 {
-	"type": "mask",
-	"symbol": "x"
+  "type":"mask",
+  "symbol":"x"
 }
 ```
 
@@ -84,11 +84,11 @@ Mask the whole value of **json** path element:
 
 ```json
 {
-    "type":"json",
-    "expression":"user.password",
-    "action":{
-        "type":"mask"
-    }
+  "type":"json",
+  "expression":"user.password",
+  "action":{
+    "type":"mask"
+  }
 }
 ```
 
@@ -96,10 +96,10 @@ Result of transformation:
 
 ```json
 {
-    "user":{
-        "password":"********",
-        "email":"john@example.com"
-    }
+  "user":{
+    "password":"********",
+    "email":"john@example.com"
+  }
 }
 ```
 
@@ -107,13 +107,13 @@ Mask data with **regexp** transformation:
 
 ```json
 {
-    "type":"regexp",
-    "expression":"number: \\d{1}(\\d+)\\d{4}",
-    "submatch_number":1,
-    "action":{
-        "type":"mask",
-        "symbol":"x"
-    }
+  "type":"regexp",
+  "expression":"number: \\d{1}(\\d+)\\d{4}",
+  "submatch_number":1,
+  "action":{
+    "type":"mask",
+    "symbol":"x"
+  }
 }
 ```
 
@@ -139,11 +139,11 @@ Here is the transformation with tokenize action:
 
 ```json
 {
-    "type":"json",
-    "expression":"user.email",
-    "action":{
-        "type":"tokenize"
-    }
+  "type":"json",
+  "expression":"user.email",
+  "action":{
+    "type":"tokenize"
+  }
 }
 ```
 
@@ -159,10 +159,10 @@ The result of transformation:
 
 ```json
 {
-    "user":{
-        "password":"12345678",
-        "email":"tokbr2f7iug10l5ctl1r3j0"
-    }
+  "user":{
+    "password":"12345678",
+    "email":"tokbr2f7iug10l5ctl1r3j0"
+  }
 }
 ```
 

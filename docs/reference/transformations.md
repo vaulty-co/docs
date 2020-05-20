@@ -6,11 +6,11 @@ Vaulty transforms request or response body based on provided list of transformat
 
 ```json
 {
-    "type":"json",
-    "expression":"card.number",
-    "action":{
-        "type":"encrypt"
-    }
+  "type":"json",
+  "expression":"card.number",
+  "action":{
+    "type":"encrypt"
+  }
 }
 ```
 
@@ -45,11 +45,11 @@ Here is an example:
 
 ```json
 {
-	"type": "regexp",
-	"expression": "number: \\d(\\d+)\\d{4}",
-  "submatch_number": 1,
-  "action": {
-		"type": "mask"
+  "type":"regexp",
+  "expression":"number: \\d(\\d+)\\d{4}",
+  "submatch_number":1,
+  "action":{
+    "type":"mask"
   }
 }
 ```
