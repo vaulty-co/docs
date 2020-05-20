@@ -61,9 +61,9 @@ Routes are the heart of the Vaulty. Routes describe when and how Vaulty should p
 }
 ```
 
-Routes file describes transformations of inbound (reverse proxy) and outbound (forward proxy) requests and responses.
+Routes file describes transformations of inbound ([reverse proxy](./reference/reverse-proxy)) and outbound ([forward proxy](./reference/forward-proxy)) requests and responses.
 
-In this file, we specify the default upstream for inbound routes: all inbound requests are forwarded to vault's upstream: https://api.yourbackend.com.
+In this file, we specify the default upstream for inbound routes: all inbound requests are forwarded to upstream: https://api.yourbackend.com.
 
 In routes section we describe one inbound route for POST requests with /cards path. Body of such requests will be transformed as following:
 

@@ -6,6 +6,17 @@ Vaulty can be configured using a configuration file or environment variables. In
 
 ## Configuration variables
 
+## Configuration file
+
+* CLI argument: `-c` or `--config`
+* Default: `vaulty.yml`
+
+Vaulty configuration file. Example:
+
+```she
+./vaulty --config conf.yml
+```
+
 ### Encryption Key
 
 - Environmental Variable: `ENCRYPTION_KEY`
@@ -14,6 +25,18 @@ Vaulty can be configured using a configuration file or environment variables. In
 - Default: N/A
 
 Encryption key is used by encrypt and decrypt actions. Encryption key must contain 32 chars. If not provided then Base64 encoding  will be used for demo purposes.
+
+Generate encryption key:
+
+```
+openssl rand -hex 16
+```
+
+outputs:
+
+```
+9907848674fbc8713dc5981a0e2d3963
+```
 
 ### Proxy Password
 
@@ -34,7 +57,7 @@ curl -x http://x:proxy_password@127.0.0.1:8080 https://whatever.com
 - Config File Key: `routes_file`
 - CLI argument: `--routes-file`
 - Type: `string`
-- Default: `~/.vaulty/routes.json`
+- Default: `./routes.json` - load routes from current directory
 
 Routes file sets file name with the routes information. Here is how you can set it via CLI:
 

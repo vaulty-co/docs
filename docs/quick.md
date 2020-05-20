@@ -50,7 +50,7 @@ docker run -p 8080:8080 -v ${PWD}:/vaulty/.vaulty/ vaulty/vaulty
 You should see something like this:
 
 ```
-==> Vaulty proxy server started on port 8080! in development environment
+==> Vaulty proxy server started on port 8080!
 ```
 
 Let's make a request with card number to Vaulty:
