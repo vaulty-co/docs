@@ -12,7 +12,7 @@ function Home() {
   return (
     <Layout
       title={`Vaulty: Encrypt, Tokenize, Mask your data transparently`}
-      description="Description will go into a meta tag in <head />">
+      description="Transparently encrypt, tokenize, mask you data with Vaulty proxy">
       <header className={classnames('hero', styles.heroBanner)}>
         <div className="container">
 	  	<div>
