@@ -3,7 +3,7 @@ module.exports = {
   tagline: 'Encrypt, tokenize, mask your data transparently with Vaulty',
   url: 'https://vaulty-co.netlify.app',
   baseUrl: '/',
-  favicon: 'img/favicon.ico',
+  favicon: 'img/favicon.png',
   organizationName: 'vaulty-co', // Usually your GitHub org/user name.
   projectName: 'vaulty', // Usually your repo name.
   themeConfig: {
@@ -11,7 +11,7 @@ module.exports = {
     navbar: {
       title: 'Vaulty',
       logo: {
-        alt: 'My Site Logo',
+        alt: 'Vaulty',
         src: 'img/vaulty-logo.svg',
       },
       links: [
