@@ -8,6 +8,7 @@ module.exports = {
   projectName: 'vaulty', // Usually your repo name.
   themeConfig: {
 	sidebarCollapsible: false,
+	  disableDarkMode: true,
     navbar: {
       title: 'Vaulty',
       logo: {
