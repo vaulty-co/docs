@@ -2,7 +2,7 @@
 title: Reverse proxy
 ---
 
-Using Vaulty as reverse proxy means that client sends requests directly to Vaulty without knowing where they end up. Vaulty forwards transformed requests to the upstream of matched route and returns transformed response back to the client. If no upstream for the route set then default upstream is used.
+Using Vaulty as a reverse proxy means that client sends requests directly to Vaulty without knowing where they end up. Vaulty forwards transformed requests to the upstream of the matched route and returns transformed response back to the client. If no upstream for the route set then default upstream is used.
 
 
 <img src="/img/reverse.svg"/>
@@ -64,8 +64,8 @@ This route sets own upstream, so all matched requests are sent to this upstream:
 }
 ```
 
-Vaulty will add request path to the upstream, so final destination URL will look as following:
+Vaulty will add request path to the upstream, so the final destination URL will look as follows:
 
 ```
 https://auth-backend.int/register
-```
+`

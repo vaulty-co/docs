@@ -4,8 +4,6 @@ title: Quick Start
 sidebar_label: Quick Start
 ---
 
-Currently you can play with Vaulty, think how you would like to use it and share your ideas and feedback so we can make it work. It's not ready for production yet.
-
 ## Prerequisites
 
 For the quick start the only thing you need is [Docker](https://docs.docker.com/install/).
@@ -39,7 +37,7 @@ Create a directory for experiments with Vaulty. In the directory, let's create s
 }
 ```
 
-In short, Vaulty will encrypt card.number element of json body of all POST requests with /post path and then send it [http://postman-echo.com](http://postman-echo.com) (postman-echo is echo server; it  will return back all data it receives).
+In short, Vaulty will encrypt `card.number` element of JSON body of all POST requests with /post path and then send it [http://postman-echo.com](http://postman-echo.com) (postman-echo is echo server; it will return all data it receives).
 
 Now, let's run Vaulty as a proxy:
 
@@ -61,7 +59,7 @@ curl http://127.0.0.1:8080/post \
   -H "Content-Type: application/json"
 ```
 
-In postman-echo response you can see that it received encrypted card.number instead of plain value of our original request.
+In postman-echo response you can see that it received an encrypted card.number instead of the plain value of our original request.
 
 ```
 {"args":{},"data":{"card":{"number":"NDI0MjQyNDI0MjQyNDI0Mg(demo encryption)","exp":"10/22"}},"files":{},"form":{},"headers":{"x-forwarded-proto":"https","x-forwarded-port":"443","host":"127.0.0.1","x-amzn-trace-id":"Root=1-5ec1412f-6ab8d3f28110822b8a425e81","content-length":"83","user-agent":"curl/7.64.1","accept":"*/*","content-type":"application/json","accept-encoding":"gzip"},"json":{"card":{"number":"NDI0MjQyNDI0MjQyNDI0Mg(demo encryption)","exp":"10/22"}},"url":"https://127.0.0.1/post"}%

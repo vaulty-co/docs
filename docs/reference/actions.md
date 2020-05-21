@@ -4,8 +4,8 @@ title: Actions
 
 Vaulty may perform the following actions on elements:
 
-- encrypt / decrypt
-- tokenize / detokenize
+- encrypt/decrypt
+- tokenize/detokenize
 - mask
 
 ## Encrypt / Decrypt
@@ -30,9 +30,9 @@ Provide the Encryption Key to the Vaulty proxy via environment variable:
 ENCRYPTION_KEY=9907848674fbc8713dc5981a0e2d3963 ./vaulty proxy
 ```
 
-Encrypted value is hex encoded string. The original and encoded values differ in length.
+The encrypted value is hex-encoded string. The original and encoded values differ in length.
 
-If Encryption Key is not provided, then Base64 encoding will be used. This is not secure and is acceptable only for demo / development purposes.
+If Encryption Key is not provided, then Base64 encoding will be used. This is not secure and is acceptable only for demo/development purposes.
 
 This is how you can encrypt `user.password` element:
 
@@ -65,7 +65,7 @@ You can see the result of transformation (and encryption):
 }
 ```
 
-`decrypt` action will decrypt element specified by `expression`.
+`decrypt` action will decrypt the element specified by `expression`.
 
 ## Mask
 
@@ -123,7 +123,7 @@ For this request:
 curl http://127.0.0.1:8080/post -d "number: 4242424242424242"
 ```
 
-The result of transformation is:
+The result of the transformation is:
 
 ```
 number: 4xxxxxxxxxxx4242
@@ -131,9 +131,9 @@ number: 4xxxxxxxxxxx4242
 
 ## Tokenize / Detokenize
 
-In Vaulty tokenization action does two things. First, it encrypts the value of transformation. Second, it stores encrypted value in secure storage (currently ephemeral in memory storage only supported) and tags it with generated token (think ID in database).
+In Vaulty tokenization action does two things. First, it encrypts the value of transformation. Second, it stores the encrypted value in secure storage (currently ephemeral in-memory storage only supported) and tags it with a generated token (think ID in a database).
 
-Generated token is a random set of characters prefixed with tok, e.g.: `tokbr2euteg10l4dq9k8u4g10l4`.
+The generated token is a random set of characters prefixed with `tok`, e.g.: `tokbr2euteg10l4dq9k8u4g10l4`.
 
 Here is the transformation with tokenize action:
 
@@ -166,8 +166,4 @@ The result of transformation:
 }
 ```
 
-Action **detokenize** performs the opposite. First, it looks encrypted value in storage by provided token. Second, it decrypts the value.
-
-
-
-
+Action `detokenize` performs the opposite. First, it looks encrypted value in storage by the provided token. Second, it decrypts the value.

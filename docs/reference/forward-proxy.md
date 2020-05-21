@@ -2,11 +2,11 @@
 title: Forward Proxy
 ---
 
-Forward proxy is used when requests via proxy go outside of your network. Vaulty creates tunnel between your client and target server. Vaulty transparently modifies requests and responses based on configured transformations.
+A Forward proxy is used when requests via proxy go outside of your network. Vaulty creates a tunnel between your client and the target server. Vaulty transparently modifies requests and responses based on configured transformations.
 
 <img src="/img/forward.svg"/>
 
-The main difference between forward proxy and [reverse proxy](./reverse-proxy) is that for the latter client can't specify the destination. Destination for reverse proxy is taken from the routes file, while the destination for the forward proxy is specified by client.
+The main difference between a forward proxy and [reverse proxy](./reverse-proxy) is that for the latter client can't specify the destination. The destination for a reverse proxy is taken from the routes file, while the destination for the forward proxy is specified by the client.
 
 
  Here is an example:
@@ -36,11 +36,11 @@ curl --cacert ./ca.pem -x https://x:12345678@proxy.vaulty.co:8080 https
 
 Forward proxy opens a pipe between client and server and can neither view or manipulate a TLS-encrypted data stream between them. Proxy just forwards data in both directions without knowing anything about the contents.
 
-So, how does Vaulty can transform requests and responses then? Here is MITM (Man-In-The-Middle) trick comes into play. Basically, we pretend to be the server to the client, and pretend to be the client to the server, while we sit in the middle decoding traffic from both sides. 
+So, how does Vaulty can transform requests and responses then? Here is MITM (Man-In-The-Middle) trick comes into play. We pretend to be the server to the client and pretend to be the client to the server, while we sit in the middle decoding traffic from both sides. 
 
-To make it work Vaulty needs CA root certificate and private key that will be used to generate and sign legit TLS certificate for our MITM server. You can provide CA root certificate and private key by [configuring CA Path](./configuration#ca-path). Vaulty will generate CA certificate and key if they are not provided.
+To make it work Vaulty needs a CA root certificate and a private key that will be used to generate and sign a legit TLS certificate for our MITM server. You can provide the CA root certificate and the private key by [configuring CA Path](./configuration#ca-path). Vaulty will generate CA certificate and key if they are not provided.
 
-Here is how you can generate you own CA:
+Here is how you can generate your own CA private key:
 
 Generate private key:
 
