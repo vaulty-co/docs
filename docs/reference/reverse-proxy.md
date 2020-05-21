@@ -4,6 +4,9 @@ title: Reverse proxy
 
 Using Vaulty as reverse proxy means that client sends requests directly to Vaulty without knowing where they end up. Vaulty forwards transformed requests to the upstream of matched route and returns transformed response back to the client. If no upstream for the route set then default upstream is used.
 
+
+<img src="/img/reverse.svg"/>
+
 Let's look at an example.
 
 `vault.upstream` sets default destination for requests that didn't match any route. As well for requests that do not set own upstream:

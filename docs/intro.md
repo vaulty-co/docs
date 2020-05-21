@@ -3,7 +3,11 @@ id: intro
 title: Introduction
 sidebar_label: Introduction
 ---
-Vaulty is an HTTP reverse and forward proxy that performs the modification (encrypt, mask, tokenize) of the request and response bodies on the fly and securely stores it in a safe. Vaulty can be used for the following:
+Vaulty is an HTTP reverse and forward proxy that performs the modification (encrypt, mask, tokenize) of the request and response bodies on the fly.
+
+<img src="/img/flow.svg"/>
+
+Vaulty can be used for the following:
 
 - Anonymize data before it reaches your APIs and backends
 - Get encryption / decryption for your APIs without changing a line of code

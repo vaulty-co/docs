@@ -2,7 +2,14 @@
 title: Forward Proxy
 ---
 
-Forward proxy is used when requests via proxy go outside of your network. Vaulty creates tunnel between your client and target server. The main difference between forward proxy and [reverse proxy](./reverse-proxy) is that for the latter client can't specify the destination. Destination for reverse proxy is taken from the routes file, while the destination for the forward proxy is specified by client. Here is an example:
+Forward proxy is used when requests via proxy go outside of your network. Vaulty creates tunnel between your client and target server. Vaulty transparently modifies requests and responses based on configured transformations.
+
+<img src="/img/forward.svg"/>
+
+The main difference between forward proxy and [reverse proxy](./reverse-proxy) is that for the latter client can't specify the destination. Destination for reverse proxy is taken from the routes file, while the destination for the forward proxy is specified by client.
+
+
+ Here is an example:
 
 ```shell
 curl -x https://proxy.vaulty.co:8080 https://example.com
