@@ -39,7 +39,7 @@ In short, Vaulty will encrypt `card.number` element of JSON body of all POST req
 Now, let's run Vaulty as a proxy:
 
 ```bash
-docker run -p 8080:8080 -v ${PWD}:/vaulty/.vaulty/ vaulty/vaulty
+docker run -p 8080:8080 -v ${PWD}:/.vaulty vaulty/vaulty
 ```
 
 You should see something like this:
