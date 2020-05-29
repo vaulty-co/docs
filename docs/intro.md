@@ -25,65 +25,61 @@ Routes are the heart of the Vaulty. Routes describe when and how Vaulty should p
 
 ```json
 {
-  "vault":{
-    "upstream":"https://api.yourbackend.com"
-  },
-  "routes":{
-    "inbound":[
-      {
-        "method":"POST",
-        "path":"/cards",
-        "request_transformations":[
-          {
-            "type":"json",
-            "expression":"card.number",
-            "action":{
-              "type":"tokenize"
-            }
-          },
-          {
-            "type":"json",
-            "expression":"card.cvc",
-            "action":{
-              "type":"tokenize"
-            }
+  "routes":[
+    {
+      "name":"in-card-tokenization",
+      "method":"POST",
+      "url":"/cards",
+      "upstream":"https://api.backend.in",
+      "request_transformations":[
+        {
+          "type":"json",
+          "expression":"card.number",
+          "action":{
+            "type":"tokenize"
           }
-        ]
-      }
-    ],
-    "outbound":[
-      {
-        "method":"POST",
-        "path":"https://api.stripe.com/v1/tokens",
-        "request_transformations":[
-          {
-            "type":"json",
-            "expression":"card.number",
-            "action":{
-              "type":"detokenize"
-            }
-          },
-          {
-            "type":"json",
-            "expression":"card.cvc",
-            "action":{
-              "type":"detokenize"
-            }
+        },
+        {
+          "type":"json",
+          "expression":"card.cvc",
+          "action":{
+            "type":"tokenize"
           }
-        ]
-      }
-    ]
-  }
+        }
+      ]
+    },
+    {
+      "name":"out-stripe-tokens",
+      "method":"POST",
+      "url":"https://api.stripe.com/v1/tokens",
+      "request_transformations":[
+        {
+          "type":"json",
+          "expression":"card.number",
+          "action":{
+            "type":"detokenize"
+          }
+        },
+        {
+          "type":"json",
+          "expression":"card.cvc",
+          "action":{
+            "type":"detokenize"
+          }
+        }
+      ]
+    }
+  ]
 }
 ```
 
 Routes file describes transformations of inbound ([reverse proxy](./reference/reverse-proxy)) and outbound ([forward proxy](./reference/forward-proxy)) requests and responses.
-
-In this file, we specify the default upstream for inbound routes: all inbound requests are forwarded to upstream: https://api.yourbackend.com.
 
 In the routes section we describe one inbound route for POST requests with /cards path. Body of such requests will be transformed as follows:
 
 - the element of JSON request body **card.number** will be tokenized
 - the element of JSON request body **card.cvc** will be tokenized
 
-The outbound route in this file describes the opposite. In requests that go to [https://api.stripe.com/v1/tokens](https://api.stripe.com/v1/tokens) Vaulty replaces elements of JSON request body such as **card.number** and **card.cvc** with their original values and pass the resulting JSON to the destination.
+Transformed body will be sent to the specified upstream: https://api.backend.in
+
+The outbound route in this file performs the opposite. In requests that go to [https://api.stripe.com/v1/tokens](https://api.stripe.com/v1/tokens) Vaulty replaces elements of JSON request body such as **card.number** and **card.cvc** with their original values and pass the resulting JSON to the destination.

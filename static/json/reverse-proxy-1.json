@@ -1,0 +1,19 @@
+{
+	"routes":[
+		{
+			"name": "in",
+			"method":"POST",
+			"url":"/post",
+			"upstream":"https://default-backend.int/",
+			"request_transformations":[
+				{
+					"type":"json",
+					"expression":"card.number",
+					"action":{
+						"type":"encrypt"
+					}
+				}
+			]
+		}
+	]
+}

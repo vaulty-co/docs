@@ -1,0 +1,46 @@
+{
+	"routes":[
+		{
+			"name": "in",
+			"method":"POST",
+			"url":"/cards",
+			"request_transformations":[
+				{
+					"type":"json",
+					"expression":"card.number",
+					"action":{
+						"type":"tokenize"
+					}
+				},
+				{
+					"type":"json",
+					"expression":"card.cvc",
+					"action":{
+						"type":"tokenize"
+					}
+				}
+			]
+		},
+		{
+			"name": "out",
+			"method":"POST",
+			"url":"https://api.stripe.com/v1/tokens",
+			"request_transformations":[
+				{
+					"type":"json",
+					"expression":"card.number",
+					"action":{
+						"type":"detokenize"
+					}
+				},
+				{
+					"type":"json",
+					"expression":"card.cvc",
+					"action":{
+						"type":"detokenize"
+					}
+				}
+			]
+		}
+	]
+}
