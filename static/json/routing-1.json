@@ -1,0 +1,36 @@
+{
+	"options": {
+		"default_upstream": "https://postman-echo.com"
+	},
+	"routes":[
+		{
+			"name": "in",
+			"method":"POST",
+			"url":"/registration",
+			"upstream":"https://auth.backend",
+			"request_transformations":[
+				{
+					"type":"json",
+					"expression":"user.email",
+					"action":{
+						"type":"encrypt"
+					}
+				}
+			]
+		},
+		{
+			"name": "out",
+			"method":"POST",
+			"url":"https://api.sendgrid.com/v3/mail/send",
+			"request_transformations":[
+				{
+					"type":"json",
+					"expression":"personalizations.1.to.1.email",
+					"action":{
+						"type":"decrypt"
+					}
+				}
+			]
+		}
+	]
+}
