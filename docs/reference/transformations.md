@@ -25,21 +25,27 @@ Each transformation has its own set of attributes.
 
 Each json transformation will try to act on the element specified by path. If the body is not a valid JSON, then the action is not performed and body stays as is.
 
-Json transformation has attribute **expression** which specifies the path of element for transformation. A path is in dot syntax, such as "user.email" or "card.number". Vaulty uses [gjson](https://github.com/tidwall/gjson) and [sjson](https://github.com/tidwall/sjson) Go packages to modify JSON document. For complete information on path syntax, please check [GJSON Syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md). Here are how paths may look like:
+Json transformation has attribute **expression** which specifies the path of JSON element for transformation. A path is in dot syntax, such as "user.email" or "card.number". Vaulty uses [gjson](https://github.com/tidwall/gjson) and [sjson](https://github.com/tidwall/sjson) Go packages to modify JSON document. Path syntax for Vaulty is a mix of [GJSON Syntax](https://github.com/tidwall/gjson/blob/master/SYNTAX.md) and [SJSON Syntax](https://github.com/tidwall/sjson#path-syntax) with the following restrictions:
+
+* only *string* values are transformed, if the result of expression is not a string, then transformation will not be performed
+* only *one level* is supported in array expression
+* *no wildcard* characters are allowed in expression (`*`, `?`)
+
+Here are how paths may look like:
 
 ```
 card.number
 user.email
-fav\.movie # use \ to escape * or .
+data.users.#.email
 emails.1 # use index to access element of array
-c?rd.number # special wildcard characters '*' and '?' can be used
+users.#.email # emails of all users
 ```
 
-Please note that currently the result of the expression must be a string. Array, object, number, boolean values will be ignored and transformation will not be performed.
+If the result of expression is array, then each string value of array will be transformed.
 
 ### Regexp
 
-Regexp transformation will find submatch specified by "submatch_number" of the expression and acts on it.  The "expression" attribute should contain a regular expression. Please note that backslash should be escaped like this: `\\`.
+Regexp transformation will find submatch specified by "submatch_number" of the expression and acts on it.  The "expression" attribute should contain a regular expression. Please note that backslash should be escaped like this: `\\`. All matches will be transformed.
 
 Here is an example:
 
@@ -57,11 +63,12 @@ Here is an example:
 Body with content
 
 ```
-number: 4242424242424242
+number: 4242424242424242 and number: 1234567890
 ```
 
 will be transformed into
 
 ```
-number: 4xxxx4242
+4xxxxxxxxxxx4242 and number: 1xxxxx7890
 ```
+
