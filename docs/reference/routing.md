@@ -83,7 +83,34 @@ Use case for outbound route is when your server needs to connect 3rd party servi
 
 Request that matches the `method` and `url` of a route will be transformed based on the transformations of that route.
 
-`method` can be any HTTP method or * meaning any method. You can also tak advantage of * and ** glob support. Under the hood Vaulty uses Golang [filepath.Match](https://golang.org/pkg/path/filepath/#Match) to match glob patterns of `url`.
+`method` can be any HTTP method or * meaning any method. You can also tak advantage of * and ** glob support. The pattern syntax for url:
+
+```
+pattern:
+    { term }
+
+term:
+    `*`         matches any sequence of non-separator characters
+    `**`        matches any sequence of characters
+    `?`         matches any single non-separator character
+    `[` [ `!` ] { character-range } `]`
+                character class (must be non-empty)
+    `{` pattern-list `}`
+                pattern alternatives
+    c           matches character c (c != `*`, `**`, `?`, `\`, `[`, `{`, `}`)
+    `\` c       matches character c
+
+character-range:
+    c           matches character c (c != `\\`, `-`, `]`)
+    `\` c       matches character c
+    lo `-` hi   matches character c for lo <= c <= hi
+
+pattern-list:
+       pattern { `,` pattern }
+                   comma-separated (without spaces) patterns
+
+
+```
 
 When no route found, Vaulty will respond with 404 status code. If you want to pass all requests to specific upstream (inbound) or url (outbound) you can create route for all requests like this:
 
