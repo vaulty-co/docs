@@ -76,6 +76,13 @@ CA Path directory is a path in which Vaulty will look for ca.key (private key) a
 
 Specifies address for Vaulty proxy.
 
+### Debug mode
+
+- CLI flag:  `--debug`
+- Default: false
+
+In debug mode Vaulty dumps request and response bodies of json, form and plain/text requests with POST, PUT and PATCH methods. It also adds some debug information about routing and so on. **Do not use this in production as you may expose sensitive data!**
+
 
 ## Examples
 

@@ -17,9 +17,9 @@ module.exports = {
       },
       links: [
         {
-          to: 'docs/intro',
-          activeBasePath: 'docs',
           label: 'Documentation',
+          to: 'docs',
+          activeBasePath: 'docs',
           position: 'right',
         },
         {
@@ -39,6 +39,8 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
+          homePageId: 'intro',
+          path: 'docs',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
