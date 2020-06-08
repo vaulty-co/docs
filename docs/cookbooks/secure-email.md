@@ -90,7 +90,19 @@ func sendConfirmationEmail(to string) error {
 
 ## Run the app
 
-For this demo we will use Docker, Docker Compose. We also need API key of active Mailgun account. To run the demo application you need to put this commands into your shell:
+For this demo we will use Docker, Docker Compose. We also need API key of active Mailgun account. First, let's create .env file with environment variables:
+
+```bash
+MG_API_KEY=38dc56e69...803487edc2b
+PROXY_PASS=12345
+ENCRYPTION_KEY=776f726420746f206120736563726574
+```
+
+* `MG_API_KEY` - Mailgun [API Key](https://help.mailgun.com/hc/en-us/articles/203380100-Where-Can-I-Find-My-API-Key-and-SMTP-Credentials-)
+* `PROXY_PASS` - [password](/docs/reference/configuration#proxy-password) for forward proxy
+* `ENCRYPTION_KEY` - [key](/docs/reference/configuration#encryption-key) to encrypt/decrypt data
+
+To run the demo application you need to put this commands into your shell:
 
 ```shell
 git clone git@github.com:vaulty-co/demo-collect-emails.git
