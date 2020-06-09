@@ -135,6 +135,10 @@ In Vaulty tokenization action does two things. First, it encrypts the value of t
 
 The generated token is a random set of characters prefixed with `tok`, e.g.: `tokbr2euteg10l4dq9k8u4g10l4`.
 
+**Action params**
+
+* format - *optional*, currently only "email" format is supported. Setting format to "email" will generate tokens with valid email format like this: tokbrf43qck6cghs4f95kkg@tokenized.local.
+
 Here is the transformation with tokenize action:
 
 ```json
@@ -142,7 +146,8 @@ Here is the transformation with tokenize action:
   "type":"json",
   "expression":"user.email",
   "action":{
-    "type":"tokenize"
+    "type":"tokenize",
+    "format":"email"
   }
 }
 ```
@@ -165,5 +170,6 @@ The result of transformation:
   }
 }
 ```
+
 
 Action `detokenize` performs the opposite. First, it looks encrypted value in storage by the provided token. Second, it decrypts the value.

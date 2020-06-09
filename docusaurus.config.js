@@ -7,7 +7,7 @@ module.exports = {
   organizationName: 'vaulty-co', // Usually your GitHub org/user name.
   projectName: 'vaulty', // Usually your repo name.
   themeConfig: {
-	sidebarCollapsible: false,
+	  sidebarCollapsible: false,
 	  disableDarkMode: true,
     navbar: {
       title: 'Vaulty',
@@ -16,17 +16,9 @@ module.exports = {
         src: 'img/vaulty-logo.svg',
       },
       links: [
-        {
-          label: 'Documentation',
-          to: 'docs',
-          activeBasePath: 'docs',
-          position: 'right',
-        },
-        {
-          href: 'https://github.com/vaulty-co/vaulty',
-          label: 'GitHub',
-          position: 'right',
-        },
+        { label: 'Documentation', to: 'docs',  position: 'right', activeBaseRegex: 'docs((?!cookbooks).)*$', },
+        { label: 'Cookbooks', to: 'docs/cookbooks/intro', position: 'right', activeBasePath: 'docs/cookbooks' },
+        { label: 'GitHub', href: 'https://github.com/vaulty-co/vaulty', position: 'right' },
       ],
     },
     footer: {
