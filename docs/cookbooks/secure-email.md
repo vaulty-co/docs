@@ -1,32 +1,36 @@
 ---
 id: secure-email
-title: WIP Secure Email Usage
+title: An email list without emails
 ---
 
 ![demo-front](/img/cookbooks/demo-front.png)
 
 In this cookbook we'll see how Vaulty can help you to protect user's data and how you can controll and limit its usage to minimize the potential damage in the event of a data breach.
 
-The architecture of application that collects emails and sends newsletters may look like this one:
+For this cookbook we will use demo app that collects user emails and sends subscription confirmation to the user.
 
-<p class="text--center"><img src="/img/cookbooks/demo-app-arch.svg" height="480"/></p>
+The goal of this cookbook is to show how by adding Vaulty to the demo app we can achieve the following results:
 
-with this steps:
-1. User submits his email from web browser to your backend
-2. Your backend saves email in DB
-3. Your backend sends confirmation email to user via email service (e.g., [Mailgun](https://www.mailgun.com/) or [Sendgrid](https://sendgrid.com/))
+1. all emails in DB are pseudonymized (replaced with tokens)
+2. original emails are encrypted and stored in isolated storage
+3. application developers has no access to plain emails and are able to send emails using pseudonymized data
 
-Expected result of adding Vaulty to the demo app:
-
-1. all emails in DB will be pseudonymized (replaced with tokens)
-2. original emails will be encrypted and stored in isolated storage
-3. application developers still will be able to send emails using pseudonymized data.
+## Demo App
 
 The source code of the demo app can be found here: https://github.com/vaulty-co/demo-collect-emails. The demo application is simplified to keep only what matters for the demo.
 
-## Front-end
+The architecture of the demo application:
 
-Let's look at the source code of the app. It has a pretty [simple form](https://github.com/vaulty-co/demo-collect-emails/blob/master/static/index.html) to collect emails with input field named `email` that will be submitted at `/subscribe`:
+<p class="text--center"><img src="/img/cookbooks/demo-app-arch.svg" height="480"/></p>
+
+Steps of the demo application:
+1. User submits his email from web browser to your backend
+2. Backend saves email in DB
+3. Backend sends confirmation email to user via email service (e.g., [Mailgun](https://www.mailgun.com/) or [Sendgrid](https://sendgrid.com/))
+
+### Front-end
+
+Let's look at the source code of the app. It has a pretty [simple form](https://github.com/vaulty-co/demo-collect-emails/blob/master/static/index.html) collecting emails with input field named `email`. Form will be submit to `/subscribe`:
 
 ```html
 <form action="/subscribe" method="post">
@@ -37,14 +41,14 @@ Let's look at the source code of the app. It has a pretty [simple form](https://
 </form>	
 ```
 
-## Back-end
+### Back-end
 
  Our [backend](https://github.com/vaulty-co/demo-collect-emails/blob/master/main.go) has two endpoints:
 
-- /subscribe - saves email in the database and sends confirmation email
-- /subscribers - shows list of emails from the database
+- /subscribe - saves email in a database and sends confirmation email via Mailgun
+- /subscribers - shows the list of emails from a database
 
-Here is the code we should pay attention to:
+Here is the code with application logic:
 
 ```go
 r.Post("/subscribe", func(w http.ResponseWriter, r *http.Request) {
@@ -69,11 +73,11 @@ Function `sendConfirmationEmail` uses [Go library](https://github.com/mailgun/ma
 
 ```go
 func sendConfirmationEmail(to string) error {
-	domain := "mg.vaulty.co"
-	apiKey := os.Getenv("MKG_API_KEY")
-
-	// configure Mailgun client
-	mg := mailgun.NewMailgun(domain, apiKey)
+	// create Mailgun client using env variables (MG_API_KEY, MG_DOMAIN)
+	mg, err := mailgun.NewMailgunFromEnv()
+	if err != nil {
+		return err
+	}
 
 	// create message with recipient "to"
 	m := mg.NewMessage("Owner <pavel+demo@vaulty.co>", "Confirmation Email", "Hey! Your subscription is confirmed!", to)
@@ -88,19 +92,17 @@ func sendConfirmationEmail(to string) error {
 }
 ```
 
-## Run the app
+### Run the app
 
-For this demo we will use Docker, Docker Compose. We also need API key of active Mailgun account. First, let's create .env file with environment variables:
+For this demo we will use Docker, Docker Compose. We also need API key of active Mailgun account. First, let's create `.env` file with environment variables:
 
 ```bash
-MG_API_KEY=38dc56e69...803487edc2b
-PROXY_PASS=12345
-ENCRYPTION_KEY=776f726420746f206120736563726574
+MG_API_KEY=key-xxxxxxxxxxxxxxxxxxxxxx
+MG_DOMAIN=mg.yourdomain.com
 ```
 
+* `MG_DOMAIN` - Your Mailgun domain
 * `MG_API_KEY` - Mailgun [API Key](https://help.mailgun.com/hc/en-us/articles/203380100-Where-Can-I-Find-My-API-Key-and-SMTP-Credentials-)
-* `PROXY_PASS` - [password](/docs/reference/configuration#proxy-password) for forward proxy
-* `ENCRYPTION_KEY` - [key](/docs/reference/configuration#encryption-key) to encrypt/decrypt data
 
 To run the demo application you need to put this commands into your shell:
 
@@ -117,12 +119,15 @@ version: '2.0'
 services:
   backend:
     build: .
+    command: ./main -port 3000
+    environment:
+      - MG_API_KEY
+      - MG_DOMAIN
     ports:
-      - "3000:3001"
-    command: ./main -port 3001
+      - "3000:3000"
 ```
 
-If you navigate your browser to http://127.0.0.1:3001 you will see the subscription form of our application. 
+If you navigate your browser to http://127.0.0.1:3000 you will see the subscription form of our application. 
 
 Here are the screenshots from the working application:
 
@@ -132,47 +137,70 @@ Last screen shows the list of subscribers with plain emails that are stored in t
 
 ## Adding Vaulty
 
-Vaulty will be used here for the following:
+Vaulty will be used for the following:
 
-* pseudonymize (tokenize) incoming data (subscriber's email)
-* de-tokenize emails when application sends it to mail service
+* pseudonymize (tokenize and encrypt) incoming data (subscriber's email) and pass it to the backend
+* de-tokenize emails when demo application sends it to the mail service (Mailgun)
 
-## Pseudonymization/tokenization
-
-First, we need to add Vaulty to our infrastructure. This is how our architecture will change:
+Let's change out infrastructure by adding Vaulty and by routing incoming and outgoung requests from the demo app to Vaulty.  This is how changed architecture looks like:
 
 ![result](/img/cookbooks/arch.svg)
 
-To implement this change we will create a copy of our docker-compose.yml file and add vaulty service there:
+To implement this change we copy existing Compose file into `docker-compose-vaulty.yml` and add vaulty service:
 
 ```yaml
 version: '2.0'
-services:y
+services:
   backend:
     build: .
-    command: ./main -port 3001
+    command: ./main -port 3000
     environment:
       - MG_API_KEY
+      - MG_DOMAIN
+      - "https_proxy=http://x:${PROXY_PASS}@vaulty:8080"
     volumes:
+      # demo app should have access to Vaulty's CA certificate
+      # when we run command to add it to system certificates
       - "./vaulty/ca.cert:/app/ca.cert"
 
   vaulty:
     image: vaulty/vaulty
+    command: ./vaulty proxy --debug -r /.vaulty/routes.json --ca /.vaulty
     ports:
-      - "3001:8080"
+      - "3000:8080"
     environment:
-      PROXY_PASS: "12345"
-      ENCRYPTION_KEY: "776f726420746f206120736563726574"
+      - PROXY_PASS
+      - ENCRYPTION_KEY
     links:
       - backend
     volumes:
       - "./vaulty:/.vaulty"
-
 ```
 
-As you may see we link vaulty service with backend (our backend works on 3001 port by default), configure Vaulty via environment variables and mount volume where Vauly will generate CA certificate for our backend service.
+As you see in this Compose file we:
 
-For the beginning we create [file with routes](https://github.com/vaulty-co/demo-collect-emails/blob/master/vaulty/routes.json) that accepts all inbound request and forwards them to our backend:
+* link vaulty service with the backend and now port 3000 on host machine is mapped to Vaulty's port 8080 not to the backend's port.
+* configure Vaulty via environment variables: set proxy password and encryption key.
+* create volumes for backend and vaulty for the same demo app derectory. Vaulty will generate CA certificate and key in this directory and backend will use CA certificate for http client.
+* we run Vaulty proxy in [debug mode](/docs/reference/configuration/#debug-mode), it should not be used for production
+
+Also, let's add the following Vaulty configuration parameters into .env file:
+
+* `PROXY_PASS` - [password](/docs/reference/configuration#proxy-password) for forward proxy
+* `ENCRYPTION_KEY` - [key](/docs/reference/configuration#encryption-key) to encrypt/decrypt data
+
+Our `.env` file:
+
+```bash
+MG_API_KEY=key-xxxxxxxxxxxxxxxxxxxxxx
+MG_DOMAIN=mg.yourdomain.com
+PROXY_PASS=12345678
+ENCRYPTION_KEY=776f726420746f206120736563726574
+```
+
+### Pseudonymization/tokenization
+
+For the beginning we create routes.json ([file with routes](https://github.com/vaulty-co/demo-collect-emails/blob/master/vaulty/routes.json)) for Vaulty to accept all inbound request and forward them to our backend:
 
 ```json
 {
@@ -189,7 +217,7 @@ For the beginning we create [file with routes](https://github.com/vaulty-co/demo
 }
 ```
 
-Now, let's run all backend with Vaulty using new docker compose file:
+Now, let's run backend and Vaulty using newly created Compose file:
 
 ```shell
 docker-compose --file docker-compose-vaulty.yml up
@@ -202,15 +230,15 @@ Here is the output:
 vaulty_1   | ==> Vaulty proxy server started on :8080!
 ```
 
-When you navigate browser to http://127.0.0.1:3001 (remember that we mapped 3001 port on host machine to 8080 port in vaulty container) you will see subscription form as it was without Vaulty. But let's look at output in shell. It will show a lot of debug information. In a second we will need to get back to it. Let's subscribe for newsletter in browser:
+When you navigate browser to http://127.0.0.1:3000 (host machine 3000 port is mapped to vaulty's 8080 port) you see subscription form as it was without Vaulty. This because Vaulty forwards all requests to the backend. Console shows debug information that we will need in a bit. Let's subscribe for the newsletter in the browser:
 
 ![result](/img/cookbooks/subscribe-success.png)
 
-And let's look at what we see in the console log. Pay attention to "Request Dump":
+And let's look at what we see in the console. We should pay attention to "Request Dump":
 
 ![result](/img/cookbooks/in-form.png)
 
-You may see the dump of POST request that goes to /subscribe with application/x-www-form-urlencoded content type and body. Now we are ready to create route that will tokenize submitted email:
+We see the dump of POST request that goes to /subscribe with application/x-www-form-urlencoded content type and body. Now we are ready to create route that tokenizes submitted email:
 
 ```json
 {
@@ -242,12 +270,17 @@ You may see the dump of POST request that goes to /subscribe with application/x-
 }
 ```
 
-We have to stop and start docker compose. Let's try to subscribe again. This time we get an error:
+We have to restart vaulty service to load new routes:
 
+```
+docker-compose --file docker-compose-vaulty.yml restart vaulty
+```
+
+Let's try to subscribe again. This time we get an error:
 
 ![result](/img/cookbooks/error.png)
 
-and in console we see that Mailgun tells us that we pass invalid email address:
+and in console we see "invalid email" error because tokenized email with .local domain) was not accepted by Mailgun:
 
 ![result](/img/cookbooks/in-mg-error.png)
 
@@ -255,102 +288,49 @@ Let's check what we have in our DB:
 
 ![result](/img/cookbooks/tokenized-subscribers.png)
 
+As you can see, our DB stores tokenized email. First part with email tokenization is completed:
 
-As you can see email was tokenized. Vaulty has encrypted plain email and generated token in email format. Mailgun does not accept such emails for delivery because of ".local" top level domain.
+* backend does not store plain emails and has no direct access to them
+* plain emails are encrypted and securely stored by Vaulty
 
-First part with tokenization is completed. But how do we send subscription confiration to user having tokenized email?
+We achieved this just by redirecting traffic to Vaulty instead of backend. With **zero code changes** inside application!
 
-## De-tokenization
+**The main question is:** how to send subscription confiration having tokenized email?
 
-Now, we need somehow to send email via Mailgun library having tokenized email on hands. Our backend sends requests to Mailgun. In order to detokenize emails we to configure backend so it will send requests to Mailgun via proxy (Vaulty).
+### De-tokenization
 
-Here is the updated version of  `sendConfirmationEmail` function that uses HTTP client configured to send requests via proxy (Vaulty):
+Vaulty works as a forward proxy and it can transform requests/responses. It means that to detokenize emails Mailgun library have to connect to the Mailgun API via Vaulty (forward proxy). **This can be achieved without any code changes** by setting `http_proxy` envrionment variable. Let's set it in  `docker-compose-vaulty.yml` to the following value: [http://x:${PROXY_PASS}@vaulty:8080"](http://x:${PROXY_PASS}@vaulty:8080"). `PROXY_PASS` is used for [proxy authentication](/docs/reference/forward-proxy#proxy-authentication) (its value is taken from `.env` file by Compose).
 
-```go
-func sendConfirmationEmail(to string) error {
-	domain := "mg.vaulty.co"
-	apiKey := os.Getenv("MG_API_KEY")
-	// configure Mailgun client
-	mg := mailgun.NewMailgun(domain, apiKey)
+To let Mailgun http client verify [TLS certificates generated by Vaulty](/docs/reference/forward-proxy#transformation-of-tls-encrypted-data) for requested domain, we need to add Vaulty's CA certificate into backend container system CA certificates. To accomplish this get into backend container:
 
-	// create http client with using Vaulty as proxy
-	httpClient, err := clientWithProxy()
-	if err != nil {
-		return err
-	}
-
-	// configure Mailgun to use client with proxy
-	mg.SetClient(httpClient)
-
-	// create message with recipient "to"
-	m := mg.NewMessage("Owner <pavel+demo@vaulty.co>", "Confirmation Email", "Hey! Your subscription is confirmed!", to)
-
-	// set timeout to 30 seconds
-	ctx, cancel := context.WithTimeout(context.Background(), time.Second*30)
-	defer cancel()
-
-	// send message
-	_, _, err = mg.Send(ctx, m)
-	return err
-}
-
+```shell
+docker-compose --file docker-compose-vaulty.yml exec backend sh
 ```
 
-HTTP client should be configured to use Vaulty as proxy and use CA certificate to verify TLS certificates Vaulty generates to intercept requests:
+ inside container add Vaulty's CA certificate to system CA certificates:
 
-```go
-func clientWithProxy() (*http.Client, error) {
-	// Get the SystemCertPool, continue with an empty pool on error
-	rootCAs, _ := x509.SystemCertPool()
-	if rootCAs == nil {
-		rootCAs = x509.NewCertPool()
-	}
-
-	// Read in the cert file
-	certs, err := ioutil.ReadFile("ca.cert")
-	if err != nil {
-		log.Fatalf("Failed to append ca.cert to RootCAs: %v", err)
-		return nil, err
-	}
-
-	// Append our cert to the system pool
-	if ok := rootCAs.AppendCertsFromPEM(certs); !ok {
-		log.Fatalf("Failed to parse and add ca.cert to the pool of certificates")
-	}
-
-	// Trust the augmented cert pool in our client
-	config := &tls.Config{
-		RootCAs: rootCAs,
-	}
-
-	proxyPass := os.Getenv("PROXY_PASS")
-
-	proxyURL, _ := url.Parse(fmt.Sprintf("http://x:%s@vaulty:8080", proxyPass))
-
-	tr := &http.Transport{
-		Proxy: func(req *http.Request) (*url.URL, error) {
-			return proxyURL, nil
-		},
-		TLSClientConfig: config,
-	}
-
-	client := &http.Client{Transport: tr}
-	return client, nil
-}
+```shell
+cp ./vaulty/ca.cert /usr/local/share/ca-certificates/vaulty.crt && update-ca-certificates
 ```
 
-When we do this and try to subscribe we will see that there is no route for outbound connections and backed failed to send email:
+finally, restart backend service:
+
+```shell
+docker-compose --file docker-compose-vaulty.yml restart backend
+```
+
+After its done, navigate to http://127.0.0.1:3000 and subscribe. In console you will see that there is no route for outbound connections and backed failed to send email:
 
 ![result](/img/cookbooks/backend-proxy-error.png)
 
-We need to things:
+We need to figure out two things now:
 
-1. To know where does Mailgun library make request (URL)
-2. What exactly it sends (content type and body)
+1. What is the destination URL to which Mailgun library makes requests?
+2. What exactly it sends (content type and body) to API?
 
-First, from the screenshot above you can see the URL Mailgun library is trying to make request at is https://api.mailgun.net/v3/mg.vaulty.co/messages.
+First, from the screenshot above you can see the URL Mailgun library is making request to https://api.mailgun.net/v3/mg.vaulty.co/messages.
 
-Second, in console output let's find dump of this request:
+Second, let's find dump of this request:
 
 ![result](/img/cookbooks/out-request-dump.png)
 
@@ -381,11 +361,28 @@ We see that content type is multipart/form-data and field "to" contains tokenize
 }
 ```
 
-This route uses form transformation to detokenize field "to". Let's stop and start docker compose and try to subscribe again:
+This route uses form transformation to detokenize field "to". Let's restart Vaulty to reload routes:
+
+```
+docker-compose --file docker-compose-vaulty.yml restart vaulty
+```
+
+Now try to subscribe again:
 
 ![result](/img/cookbooks/success.png)
 
-Email was successfully sent to the recipient!
+Email was successfully sent to the recipient (Vaulty detokenized recipient email in Mailgun request)!
 
+## Summary
 
+We have achieved expected results of this cookbook:
+
+1. all emails in DB will be pseudonymized (replaced with tokens)
+2. backend has no access to plain emails
+3. original emails are encrypted and stored in isolated storage (Vaulty)
+4. application developers are able to send emails using pseudonymized data
+
+**All this was achieved without application code changes. Only by routing traffic to Vaulty.**
+
+Please, [submit questions and your feedback](https://github.com/vaulty-co/vaulty/issues)! We would be glad to help you with setting up Vaulty!
 
