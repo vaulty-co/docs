@@ -3,7 +3,7 @@ id: email-list-with-protected-emails
 title: An email list without emails
 ---
 
-![demo-front](/img/cookbooks/demo-front.png)
+![Vaulty Cookbook: An email list without emails](/img/cookbooks/demo-front.png)
 
 In this cookbook, we'll see how Vaulty can help you to protect user's data and how you can control and limit its usage to minimize the potential damage in the event of a data breach.
 
