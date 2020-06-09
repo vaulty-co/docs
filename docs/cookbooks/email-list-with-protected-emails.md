@@ -205,7 +205,7 @@ For the beginning, create routes.json ([file with routes](https://github.com/vau
 ```json
 {
   "options":{
-    "default_upstream":"http://backend:3001"
+    "default_upstream":"http://backend:3000"
   },
   "routes":[
     {
@@ -243,7 +243,7 @@ We see the dump of the POST request that goes to /subscribe with application/x-w
 ```json
 {
   "options":{
-    "default_upstream":"http://backend:3001"
+    "default_upstream":"http://backend:3000"
   },
   "routes":[
     {
@@ -339,7 +339,7 @@ We see that content type is multipart/form-data and field "to" contains tokenize
 ```json
 {
   "options":{
-    "default_upstream":"http://backend:3001"
+    "default_upstream":"http://backend:3000"
   },
   "routes":[
     ...
