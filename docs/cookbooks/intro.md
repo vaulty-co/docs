@@ -5,4 +5,5 @@ title: Vaulty Cookbooks
 
 A collection of guides to walk you through more advanced Vaulty applications.
 
-[Mailgun integration](./secure-email)
+* [An email list without emails](./email-list-with-protected-emails) - shows how to pseudonymized/tokenize emails of users and how to send emails via Mailgun/Sendgrid using pseudonymized data
+
