@@ -11,9 +11,9 @@ For this cookbook, we will use a demo app that collects user emails and sends su
 
 The goal of the guide is to show how by adding Vaulty to the demo app we can achieve the following results:
 
-1. all emails in DB are pseudonymized (replaced with tokens)
-2. original emails are encrypted and stored in isolated storage
-3. application developers have no access to plain emails and can send emails using pseudonymized data
+1. All emails in a database are pseudonymized (replaced with tokens)
+2. Original emails are encrypted and stored in isolated storage
+3. Application developers have no access to plain emails and can send emails using pseudonymized data
 
 ## Demo App
 
@@ -284,11 +284,11 @@ in the console we see "invalid email" error because tokenized email with .local 
 
 ![result](/img/cookbooks/in-mg-error.png)
 
-Let's check what we have in our DB:
+Let's check what we have in our database:
 
 ![result](/img/cookbooks/tokenized-subscribers.png)
 
-As you can see, our DB stores a tokenized email. The first part with email tokenization is completed:
+As you can see, our database stores a tokenized email. The first part with email tokenization is completed:
 
 * the backend does not store plain emails and has no direct access to them
 * plain emails are encrypted and securely stored by Vaulty
@@ -377,10 +377,10 @@ Email was successfully sent to the recipient (Vaulty detokenized recipient email
 
 We have achieved the expected results of this cookbook:
 
-1. all emails in the DB will be pseudonymized (replaced with tokens)
-2. the backend has no access to plain emails
-3. original emails are encrypted and stored in isolated storage (Vaulty)
-4. application developers are able to send emails using pseudonymized data
+1. All emails in the database are pseudonymized (replaced with tokens)
+2. The backend has no access to plain emails
+3. Original emails are encrypted and stored in isolated storage (Vaulty)
+4. Application developers are able to send emails using pseudonymized data
 
 **All this was achieved without application code changes. Only by routing traffic to Vaulty.**
 
