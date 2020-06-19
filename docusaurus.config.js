@@ -16,8 +16,7 @@ module.exports = {
         src: 'img/vaulty-logo.svg',
       },
       links: [
-        { label: 'Documentation', to: 'docs',  position: 'right', activeBaseRegex: 'docs((?!cookbooks).)*$', },
-        { label: 'Cookbooks', to: 'docs/cookbooks/intro', position: 'right', activeBasePath: 'docs/cookbooks' },
+        { label: 'Cookbooks', to: '/cookbooks/intro', position: 'right', activeBasePath: '/cookbooks' },
         { label: 'GitHub', href: 'https://github.com/vaulty-co/vaulty', position: 'right' },
       ],
     },
@@ -32,18 +31,12 @@ module.exports = {
       {
         docs: {
           homePageId: 'intro',
-          path: 'docs',
+	  routeBasePath: '/',
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
             'https://github.com/vaulty-co/website/edit/master/',
 
-        },
-        blog: {
-          showReadingTime: true,
-          // Please change this to your repo.
-          editUrl:
-            'https://github.com/facebook/docusaurus/edit/master/website/blog/',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
