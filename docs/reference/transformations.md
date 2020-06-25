@@ -56,17 +56,19 @@ Each transformation has its own set of parameters.
 
 ### JSON
 
-JSON transformations are performed on requests and responses with `application/json` content type. Each JSON transformation will try to act on the element of JSON document specified by path. If the body is not a valid JSON, then the action is not performed and request or response stays as is. If the result of expression is an array, then each string value of array will be transformed.
+JSON transformations are performed on requests and responses with `application/json` content type. Each JSON transformation will try to act on the element of JSON document specified by path.
+
+If the body is not a valid JSON, then the action is not performed and request or response stays as is. Also, if the result of expression is an array, then each string value of array will be transformed.
 
 **JSON transformation params**:
 
-* `expression` - specifies the path of JSON element for transformation.
+* `expression` - specifies the path of JSON element for transformation. Multiple paths should be separated by comma (e.g., "card.number, card.cvc") .
 
 Here is an example:
 
 ```json
 {
-  "type":"regexp",
+  "type":"json",
   "expression":"card.number",
   "action":{
     "type":"tokenize"
