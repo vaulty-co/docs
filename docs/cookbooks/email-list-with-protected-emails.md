@@ -21,7 +21,7 @@ The source code of the demo app can be found here: https://github.com/vaulty-co/
 
 The architecture of the demo application:
 
-<p class="text--center"><img src="/img/cookbooks/demo-app-arch.svg" height="480"/></p>
+<p class="text--center"><img src="/img/cookbooks/demo-app-arch.svg" height="481"/></p>
 
 Steps of the demo application:
 1. A user submits his email from web browser to a backend

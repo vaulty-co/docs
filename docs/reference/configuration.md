@@ -35,6 +35,15 @@ outputs:
 9907848674fbc8713dc5981a0e2d3963
 ```
 
+### Hash Salt
+
+- Environmental Variable: HASH_SALT
+- CLI flag: `--hash-salt`
+- Type: `string`
+- Default: N/A
+
+Salt is used by hash action to force uniqueness of resulting checksum.
+
 ### Proxy Password
 
 - Environmental Variable: `PROXY_PASS`
@@ -43,6 +52,8 @@ outputs:
 - Default: random value will be generated on start
 
 Proxy password will be used for forward proxy authentication. Provided user ("x") is ignored.
+
+**Warning!** Only HTTPS proxy (accessed by CONNECT method) supports proxy authentication. HTTP proxy does not support it.
 
 ```shell
 curl -x http://x:proxy_password@127.0.0.1:8080 https://whatever.com

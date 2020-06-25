@@ -171,5 +171,20 @@ The result of transformation:
 }
 ```
 
-
 Action `detokenize` performs the opposite. First, it looks encrypted value in storage by the provided token. Second, it decrypts the value.
+
+## Hash
+
+Using hash action you can replace value desired value with its SHA256 checksum:
+
+```
+{
+  "type":"json",
+  "expression":"user.ip",
+  "action":{
+    "type":"hash"
+  }
+}
+```
+
+Additionally, you can configure a [Salt Value](./configuration#salt-value) for the hash function.
