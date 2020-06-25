@@ -17,7 +17,7 @@ The goal of the guide is to show how by adding Vaulty to the demo app we can pro
 4. All data is stored in isolated storage
 5. Application developers have no access to plain data
 
-##Demo App
+## Demo App
 
 The source code of the demo app can be found here: https://github.com/vaulty-co/demo-sensitive-data-safe-import. The demo application is simplified to keep only what matters for the demo.
 
