@@ -5,9 +5,9 @@ title: Safe import of sensitive data
 
 ![PII data exposed](/img/cookbooks/safe-import/intro.png)
 
-In this cookbook, we'll see how Vaulty can help you to protect user's data when system imports it from 3rd party service via API. Vaulty lets you to control and limit data usage to minimize the potential damage in the event of a data breach.
+In this cookbook, we'll see how Vaulty can help you to protect the user's data when the system imports it from 3rd party service via API. Vaulty lets you control and limit data usage to minimize the potential damage in the event of a data breach.
 
-For this cookbook, we will use a demo app that pulls data from external API.
+For this cookbook, we will use a demo app that pulls data from the external API.
 
 The goal of the guide is to show how by adding Vaulty to the demo app we can protect sensitive user data and achieve the following results:
 
@@ -45,7 +45,7 @@ Our external API has only one `/users` endpoint which provides users data:
 * IP
 * Credit card number
 * SSN
-* AccessToken to access API on behalf of user
+* AccessToken to access API on behalf of a user
 
 ### Backend
 
@@ -56,7 +56,7 @@ Our backend has two endpoints:
 
 ### Run the app
 
-To run the demo application you need to run following commands:
+To run the demo application you need to run the following commands:
 
 ```shell
 git clone git@github.com:vaulty-co/demo-safe-3rd-party-import.git
@@ -80,7 +80,7 @@ services:
       - "3001:3001"
 ```
 
-If you navigate your browser to http://127.0.0.1:3001/users you see what external API provides (it generates fake data for each call):
+Navigate your browser to http://127.0.0.1:3001/users to see what the external API provides to us (it generates fake data for each call):
 
 ![Api PII plain personal data](/img/cookbooks/safe-import/api-pii-plain-personal-data.png)
 
@@ -88,11 +88,11 @@ We have no users in our backend's DB. Let's import them from external API by nav
 
 ![Pull PII from external API](/img/cookbooks/safe-import/pull-pii-from-external-api.png)
 
-Now, let's see what do we have in out DB http://127.0.0.1/users:
+Now, let's see what do we have in our DB http://127.0.0.1/users:
 
 ![PII data exposed](/img/cookbooks/safe-import/intro.png)
 
-as you can see, we have the same data we pulled from external API. The problem here is that such sensitive data should be properly protected. It should be encrypted and access to it should be limited. Let's see how Vaulty can help with this.
+As you can see, we have the same data we pulled from the external API. The problem here is that sensitive data should be properly protected. First, it should be encrypted. Second, access to it should be limited. Let's see how Vaulty can help with this.
 
 ## Adding Vaulty
 
@@ -157,7 +157,7 @@ Our `.env` file:
 ENCRYPTION_KEY=776f726420746f206120736563726574
 ```
 
-Also, in /vaulty directory we should create route.json with outbond route that will let all requests to pass through vaulty to our external API:
+Also, in /vaulty directory we should create `routes.json` with the outbound route that will let all requests to pass through Vaulty to our external API:
 
 ```json
 {
@@ -172,7 +172,7 @@ Also, in /vaulty directory we should create route.json with outbond route that w
 }
 ```
 
-Vaulty setup is completed now. Let's stop our services and start them again but this time with Vaulty:
+Vaulty is setup now. Let's stop our services and start them again but this time with Vaulty:
 
 ```shell
 docker-compose down
@@ -181,11 +181,11 @@ docker-compose --file docker-compose-vaulty.yml up
 
 Import users from external API by visiting this url: http://127.0.0.1/import
 
-In terminal we can see the dump of expernal API response:
+In the terminal we can see the dump of the external API response:
 
 ![Response dump](/img/cookbooks/safe-import/dump.png)
 
-We see the URL of the request and JSON body of response. Now we can create route and transformations for the response.
+We see the URL of the request and JSON body of the response. Now we can create a route and transformations for the response.
 
 ### Transformations
 
@@ -193,7 +193,7 @@ Here is what we want to do with sensitive data we receive from external API:
 
 1. tokenize email
 2. encrypt phone number
-3. create hash for IP address
+3. create a hash for IP address
 4. encrypt card number
 5. encrypt SSN
 6. encrypt access token
@@ -223,7 +223,7 @@ Let's start from adding new route and first transformation for the email attribu
 }
 ```
 
-As you can see, our route has a name "out-import-users". Transformations of this route will be only applied to `GET` requests sent to http://external-api:3001/users. As our response is in JSON format, we use `json` transformation. Our response is the array of objects containing data we want to protect. To tokenize `Email` element, we use `#.Email` path in expression parameter of the transformation (`#` - is used to query an array).
+As you can see, our route is named "out-import-users". Transformations of this route will be only applied to `GET` requests sent to http://external-api:3001/users. As our response is in JSON format, we use `json` transformation. Our response is the array of objects containing data we want to protect. To tokenize `Email` element, we use `#.Email` path in expression parameter of the transformation (`#` - is used to query an array).
 
 Let's restart our services (it cleans up DB and reloads Vaulty):
 
@@ -286,6 +286,6 @@ Import users again via http://127.0.0.1/import and check how sensitive data was 
 
 ![Protected PII with Vaulty encryption](/img/cookbooks/safe-import/protected-pii-encrypted-tokenized.png)
 
-As you can see, we achieved the goal of this cookbook. Now all data we pull from external API and store in local DB is protected (encrypted, hashed, tokenized). Tokenized data is stored inside Vaulty as well as encryption key. It is much easier for you to protect sensitive user data with tiny isolated service like Vaulty.
+We have achieved the goal of this cookbook. Now all data we pull from external API and store in local DB is protected (encrypted, hashed, tokenized). Tokenized data is stored inside Vaulty as well as an encryption key. It is much easier for you to protect sensitive user data with tiny isolated services like Vaulty.
 
 Please, [submit questions and your feedback](https://github.com/vaulty-co/vaulty/issues)! We would be glad to help you with setting up Vaulty!
