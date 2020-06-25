@@ -286,6 +286,12 @@ Import users again via http://127.0.0.1/import and check how sensitive data was 
 
 ![Protected PII with Vaulty encryption](/img/cookbooks/safe-import/protected-pii-encrypted-tokenized.png)
 
+Email was successfully sent to the recipient (Vaulty detokenized recipient email in Mailgun request)!
+
+## Summary
+
 We have achieved the goal of this cookbook. Now all data we pull from external API and store in local DB is protected (encrypted, hashed, tokenized). Tokenized data is stored inside Vaulty as well as an encryption key. It is much easier for you to protect sensitive user data with tiny isolated services like Vaulty.
+
+**All this was achieved without application code changes. Only by setting Vaulty as a proxy.**
 
 Please, [submit questions and your feedback](https://github.com/vaulty-co/vaulty/issues)! We would be glad to help you with setting up Vaulty!
