@@ -1,10 +1,10 @@
 module.exports = {
   title: 'Vaulty',
   tagline: 'Encrypt, tokenize, mask your data transparently with Vaulty',
-  url: 'https://vaulty-co.netlify.app',
+  url: 'https://docs.vaulty.co',
   baseUrl: '/',
   favicon: 'img/favicon.png',
-  organizationName: 'vaulty-co', // Usually your GitHub org/user name.
+  organizationName: 'Vaulty', // Usually your GitHub org/user name.
   projectName: 'vaulty', // Usually your repo name.
   themeConfig: {
 	  sidebarCollapsible: false,
