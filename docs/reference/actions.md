@@ -187,4 +187,4 @@ Using hash action you can replace value desired value with its SHA256 checksum:
 }
 ```
 
-Additionally, you can configure a [Salt Value](./configuration#salt-value) for the hash function.
+Additionally, you can configure a [Salt Value](./configuration#hash-salt) for the hash function.
