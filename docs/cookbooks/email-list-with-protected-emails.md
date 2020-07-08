@@ -308,7 +308,11 @@ Now, let's update our `routes.json` to detokenize the email address on it's way 
 }
 ```
 
-This route uses form transformation to detokenize the `to` field (which contains the email address). Finally, just restart Vaulty to reload routes:
+This route uses form transformation to detokenize the `to` field (which contains the email address).
+
+> If you're unsure about the exact request path, just look at the Vaulty logs! Since we enabled [`debug mode`](/reference/configuration/#debug-mode), all requests and responses are dumped there.
+
+Finally, just restart Vaulty to reload routes:
 
 ```
 docker-compose --file docker-compose-vaulty.yml restart vaulty
