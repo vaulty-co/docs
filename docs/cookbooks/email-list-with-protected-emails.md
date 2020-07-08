@@ -236,8 +236,6 @@ Start by creating a [`routes.json`](https://github.com/vaulty-co/demo-collect-em
         }
       ]
     },
-
-    /* pass-thru all other routes as-is */
     {
       "name": "in-all",
       "method": "*",
