@@ -8,24 +8,24 @@ module.exports = {
   projectName: 'vaulty', // Usually your repo name.
   themeConfig: {
 	  sidebarCollapsible: false,
-	  disableDarkMode: true,
+	  disableDarkMode: false,
     navbar: {
       title: 'Vaulty',
       logo: {
         alt: 'Vaulty',
         src: 'img/vaulty-logo.svg',
-      href: 'https://vaulty.co/',
+        href: 'https://vaulty.co/'
       },
       links: [
         { label: 'Documentation', to: '/', position: 'right', activeBaseRegex: '/(intro|quick|reference)' },
         { label: 'Cookbooks', to: '/cookbooks/intro', position: 'right', activeBasePath: '/cookbooks' },
-        { label: 'GitHub', href: 'https://github.com/vaulty-co/vaulty', position: 'right' },
-      ],
+        { label: 'GitHub', href: 'https://github.com/vaulty-co/vaulty', position: 'right' }
+      ]
     },
     footer: {
       style: 'dark',
-      copyright: `Copyright © ${new Date().getFullYear()} Vaulty.`,
-    },
+      copyright: `Copyright © ${new Date().getFullYear()} Vaulty.`
+    }
   },
   presets: [
     [
@@ -37,13 +37,13 @@ module.exports = {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
           editUrl:
-            'https://github.com/vaulty-co/docs/edit/master/',
+            'https://github.com/vaulty-co/docs/edit/master/'
 
         },
         theme: {
-          customCss: require.resolve('./src/css/custom.css'),
-        },
-      },
-    ],
-  ],
-};
+          customCss: require.resolve('./src/css/custom.css')
+        }
+      }
+    ]
+  ]
+}
