@@ -4,7 +4,7 @@ title: An email list without emails
 ---
 
 
-In this cookbook, we'll see how you can use Vault to maintain an email list without ever storing any emails in plaintext!
+In this cookbook, we'll see how you can use Vaulty to maintain an email list without ever storing any emails in plaintext!
 
 ![Vaulty Cookbook: An email list without emails](/img/cookbooks/demo-front.png)
 
