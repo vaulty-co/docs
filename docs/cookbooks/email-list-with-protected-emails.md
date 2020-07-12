@@ -160,7 +160,8 @@ services:
       - "3000:8080"
     environment:
       - PROXY_PASS
-      - ENCRYPTION_KEY
+      - VAULTY_ENCRYPTION_KEY
+      - VAULTY_ENCRYPTION_TYPE=aesgcm
     links:
       - backend
     volumes:
@@ -199,7 +200,7 @@ Here's what changed:
 Also, let's add the following Vaulty configuration parameters into .env file:
 
 * `PROXY_PASS` - [password](/reference/configuration#proxy-password) for forward proxy
-* `ENCRYPTION_KEY` - [key](/reference/configuration#encryption-key) to encrypt/decrypt data
+* `VAULTY_ENCRYPTION_KEY` - [key](/reference/encryption-backends#aes-gcm) to encrypt/decrypt data
 
 Our `.env` file now looks like this:
 
@@ -208,7 +209,7 @@ Our `.env` file now looks like this:
 MG_API_KEY=key-xxxxxxxxxxxxxxxxxxxxxx
 MG_DOMAIN=mg.yourdomain.com
 PROXY_PASS=12345678
-ENCRYPTION_KEY=776f726420746f206120736563726574
+VAULTY_ENCRYPTION_KEY=776f726420746f206120736563726574
 ```
 
 ### 1. Pseudonymize incoming emails

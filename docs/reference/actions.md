@@ -10,24 +10,26 @@ Vaulty may perform the following actions on elements:
 
 ## Encrypt / Decrypt
 
-Currently, Vaulty supports built-in encryption with AES GCM and 256-bit key. To use encryption you have to configure Encryption Key first (see [Configuration](./configuration#encryption-key)). 
+Currently, Vaulty supports built-in encryption with AES GCM and 256-bit key. To use encryption you have to configure [Encryption Backend first](./encryption-backends). Here we provide an example of using build-in AES GCM encryption with user provided encryption key. 
 
 Generate encryption key:
 
-```
+```shell
 openssl rand -hex 16
 ```
 
 outputs:
 
-```
+```shell
 9907848674fbc8713dc5981a0e2d3963
 ```
 
 Provide the Encryption Key to the Vaulty proxy via environment variable:
 
-```
-ENCRYPTION_KEY=9907848674fbc8713dc5981a0e2d3963 ./vaulty proxy
+```shell
+VAULTY_ENCRYPTION_TYPE=aesgcm \
+VAULTY_ENCRYPTION_KEY=9907848674fbc8713dc5981a0e2d3963 \
+./vaulty proxy
 ```
 
 The encrypted value is hex-encoded string. The original and encoded values differ in length.

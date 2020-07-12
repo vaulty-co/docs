@@ -135,7 +135,8 @@ services:
       - external-api
     environment:
       - PROXY_PASS
-      - ENCRYPTION_KEY
+      - VAULTY_ENCRYPTION_KEY
+      - VAULTY_ENCRYPTION_TYPE=aesgcm
     volumes:
       - "./vaulty:/.vaulty"
 ```
@@ -149,12 +150,12 @@ As you see in this Compose file we:
 
 Also, let's add the following Vaulty configuration parameters into .env file:
 
-- `ENCRYPTION_KEY` - [key](https://docs.vaulty.co/reference/configuration#encryption-key) to encrypt/decrypt data
+- `ENCRYPTION_KEY` - [key](https://docs.vaulty.co/reference/encryption-backends#aes-gcm) to encrypt/decrypt data
 
 Our `.env` file:
 
 ```bash
-ENCRYPTION_KEY=776f726420746f206120736563726574
+VAULTY_ENCRYPTION_KEY=776f726420746f206120736563726574
 ```
 
 Also, in /vaulty directory we should create `routes.json` with the outbound route that will let all requests to pass through Vaulty to our external API:

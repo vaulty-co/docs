@@ -14,26 +14,9 @@ It will work out of the box without any configuration.
 
 ## Configuration variables
 
-### Encryption Key
+### Encryption
 
-- Environmental Variable: `ENCRYPTION_KEY`
-- CLI flag: `--key` or `-k`
-- Type: `string`
-- Default: N/A
-
-Encryption key is used by encrypt and decrypt actions. Encryption key must contain 32 chars. If not provided then Base64 encoding  will be used for demo purposes.
-
-Generate encryption key:
-
-```
-openssl rand -hex 16
-```
-
-outputs:
-
-```
-9907848674fbc8713dc5981a0e2d3963
-```
+Please, check [encryption backends](./encryption-backends) section to see how to configure Vaulty encryption.
 
 ### Hash Salt
 
