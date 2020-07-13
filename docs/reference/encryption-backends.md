@@ -6,7 +6,7 @@ Vaulty encrypts and decrypts the data using encryption backends. Encryption back
 
 * [none](#none) (used by default)
 * [aesgcm](#aes-gcm) - AES GCM encryption with user provided encryption key
-* [awskms](#aws-kms) - AES GCM enncryption with encryption key provided and managed by AWS KMS
+* [awskms](#aws-kms) - AES GCM encryption with encryption key provided and managed by AWS KMS
 
 Here is the demo of how you can configure and use encryption backends:
 
@@ -48,7 +48,7 @@ AWS Key Management Service (KMS) makes it easy for you to create and manage cryp
 
 ### Configuration
 
-To let Vaulty use AWS KMS for encryption, you must specify your AWS credentials, region and master key ID.
+To let Vaulty use AWS KMS for encryption, you must specify your AWS credentials, region, and master key ID.
 
 Region and master key are set via environment variables:
 
