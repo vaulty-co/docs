@@ -8,13 +8,13 @@ Vaulty encrypts and decrypts the data using encryption backends. Encryption back
 * [aesgcm](#aes-gcm) - AES GCM encryption with user provided encryption key
 * [awskms](#aws-kms) - AES GCM encryption with encryption key provided and managed by AWS KMS
 
-Here is the demo of how you can configure and use encryption backends:
-
-<img src="/img/reference/encryption.gif"/>
-
 ## None
 
-Built-in backend that performs Base64 encoding and decoding. It requires no setup and configuration that's why it works best for the demo and the development purposes. This backend should **NEVER** be used in the production. If you want, you can specify `none` encryption backend like this:
+Built-in backend that performs Base64 encoding and decoding. 
+
+<img src="/img/reference/none-enc.gif"/>
+
+It requires no setup and configuration that's why it works best for the demo and the development purposes. This backend should **NEVER** be used in the production. If you want, you can specify `none` encryption backend like this:
 
 ```bash
 VAULTY_ENCRYPTION_TYPE=none 
@@ -22,7 +22,11 @@ VAULTY_ENCRYPTION_TYPE=none
 
 ## AES GCM
 
-Build-in backend that uses AES encryption with GCM mode with 256-bit encryption key. To use AES GCM encryption set following environment variables:
+Build-in backend that uses AES encryption with GCM mode with 256-bit encryption key.
+
+<img src="/img/reference/aes-gcm.gif"/>
+
+To use AES GCM encryption set following environment variables:
 
 ```bash
 VAULTY_ENCRYPTION_TYPE=aesgcm
@@ -45,6 +49,8 @@ outputs something like this:
 ## AWS KMS
 
 AWS Key Management Service (KMS) makes it easy for you to create and manage cryptographic keys. 
+
+<img src="/img/reference/aws-kms.gif"/>
 
 ### Configuration
 
