@@ -4,9 +4,9 @@ title: Actions
 
 Vaulty may perform the following actions on elements:
 
-- encrypt/decrypt
-- tokenize/detokenize
-- mask
+- [encrypt/decrypt](#encrypt--decrypt)
+- [tokenize/detokenize](#tokenize--detokenize)
+- [mask](#mask)
 
 ## Encrypt / Decrypt
 
@@ -133,7 +133,10 @@ number: 4xxxxxxxxxxx4242
 
 ## Tokenize / Detokenize
 
-In Vaulty tokenization action does two things. First, it encrypts the value of transformation. Second, it stores the encrypted value in secure storage (currently ephemeral in-memory storage only supported) and tags it with a generated token (think ID in a database).
+In Vaulty tokenization action does two things. First, it encrypts the value of
+transformation. Second, it stores the encrypted value in a [secure
+storage](./storage-backends) and tags it with a generated token (think ID in a
+database).
 
 The generated token is a random set of characters prefixed with `tok`, e.g.: `tokbr2euteg10l4dq9k8u4g10l4`.
 
