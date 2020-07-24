@@ -29,6 +29,8 @@ VAULTY_STORAGE_TYPE=memory
 
 The Redis storage backend is used to store tokenized data in a [Redis](https://redis.io/) server.
 
+<img src="/img/reference/redis-storage.gif"/>
+
 ### Configuration
 
 The connection URL is set using the ```REDIS_URL``` environment variable. Here is how you can configure redis storage backend:
